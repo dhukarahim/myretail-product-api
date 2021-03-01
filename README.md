@@ -3,11 +3,13 @@
 This project will create an end-to-end Proof-of-Concept for a products API, which will aggregate product data from multiple sources and return it as JSON to the caller. It also provides an API to store and update Product price information in NoSQL database.
 
 ## Project Submodules
-### [Controller](./myretail-product-api/src/main/src/main/java/com/myretail/product/api/controller)
+### [Controller](./src/main/java/com/myretail/product/api/controller)
 Defines all the RESTful APIs for this service
-### [Service](./myretail-product-api/src/main/src/main/java/com/myretail/product/api/service)
+### [Service](./src/main/java/com/myretail/product/api/service)
 Defines all the Service API which will be called from controller
-### [Model](./myretail-product-api/src/main/src/main/java/com/myretail/product/api/model)
+### [Repository](./src/main/java/com/myretail/product/api/repository)
+Defines Repository which interacts with NoSQL Database
+### [Model](./src/main/java/com/myretail/product/api/model)
 Defines all the concept for Product API
 
 # Instruction for running this application
