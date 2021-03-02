@@ -83,3 +83,42 @@ While the response body would be empty for a successful request, the response st
 
 ### 500: Internal Server Error
 Status will be 500 if there was an internal failure in the service
+
+## PUT Endpoint
+
+**Endpoint:**: PUT `/product/`
+
+### Request Body
+``` json
+{
+    "id": 13860428,
+    "current_price": {
+        "value": 17.99,
+        "currency_code": "USD"
+    }
+}
+```
+### Response Body
+```json
+```
+While the response body would be empty for a successful request, the response status would be `204: No Content`
+
+### Request Body Parameters
+| Field   | Description         | Required | Type   | Example               |
+|:--------|:--------------------|:--------:|:-------|:----------------------|
+| id      | Product identifier    |   yes    | number | 13860428                  |
+| current_price    | Product current price     |   yes    | object | [refer below](#current_price)  |
+
+#### current_Price
+| Field   | Description         | Required | Type   | Example               |
+|:--------|:--------------------|:--------:|:-------|:----------------------|
+| value      | Product Price    |   yes    | double | 1300                  |
+| currency_code   | Amount Currency          |   yes    | string | USD               |
+
+### Responses
+### 204: No content
+```json
+```
+
+### 500: Internal Server Error
+Status will be 500 if there was an internal failure in the service
