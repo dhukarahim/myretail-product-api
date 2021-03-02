@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.myretail.product.api.entity.ProductPriceEntity;
 import com.myretail.product.api.exception.ResourceNotFoundException;
 import com.myretail.product.api.exception.ServiceException;
-import com.myretail.product.api.model.ProductDetail;
+import com.myretail.product.api.model.Product;
 import com.myretail.product.api.model.ProductPrice;
 import com.myretail.product.api.model.ProductURLInfo;
 import com.myretail.product.api.repository.ProductRepository;
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository repository;
 
 	@Override
-	public void addProduct(ProductDetail productDetail) {
+	public void addProduct(Product productDetail) {
 		try {
 			ProductPriceEntity entity = new ProductPriceEntity(productDetail.getId(),
 					productDetail.getCurrentPrice().getValue(), productDetail.getCurrentPrice().getCurrencyCode());
@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void updateProduct(ProductDetail productDetail) {
+	public void updateProduct(Product productDetail) {
 		try {
 			ProductPriceEntity entity = new ProductPriceEntity(productDetail.getId(),
 					productDetail.getCurrentPrice().getValue(), productDetail.getCurrentPrice().getCurrencyCode());
@@ -58,9 +58,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductDetail getProductByID(long productId, ProductURLInfo urlInfo) {
+	public Product getProductByID(long productId, ProductURLInfo urlInfo) {
 		ProductPrice productPrice = getProductPrice(productId);
-		ProductDetail productDetail = new ProductDetail(productId, getProductDescription(productId, urlInfo), productPrice);
+		Product productDetail = new Product(productId, getProductDescription(productId, urlInfo), productPrice);
 		return productDetail;
 	}
 

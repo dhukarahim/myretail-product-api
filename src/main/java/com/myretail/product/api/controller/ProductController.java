@@ -14,23 +14,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myretail.product.api.exception.ResourceNotFoundException;
 import com.myretail.product.api.exception.ServiceException;
-import com.myretail.product.api.model.ProductDetail;
+import com.myretail.product.api.model.Product;
 import com.myretail.product.api.model.ProductURLInfo;
 import com.myretail.product.api.service.ProductService;
 
+/**
+ * Rest Controller class for MyProduct API SpringBoot application
+ *
+ * @author Rahim Dhuka
+ */
 @RestController
 public class ProductController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 	@Autowired
 	private ProductService service;
-	
+
 	@Autowired
 	private ProductURLInfo urlInfo;
-	
+
+	/**
+	 * REST end point for adding Product.
+	 *
+	 * @param product - A {@link Product} containing the 835 data.
+	 * @return A {@link ResponseEntity}
+	 */
 	@PostMapping("/product")
-	public ResponseEntity<Object> addProduct(@RequestBody ProductDetail product) {
+	public ResponseEntity<Object> addProduct(@RequestBody Product product) {
 		try {
 			validateProduct(product);
 			service.addProduct(product);
@@ -43,9 +54,15 @@ public class ProductController {
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
+	/**
+	 * REST end point for modifying Product price.
+	 *
+	 * @param product - A {@link Product} containing the 835 data.
+	 * @return A {@link ResponseEntity}
+	 */
 	@PutMapping("/product")
-	public ResponseEntity<Object> updateProduct(@RequestBody ProductDetail product) {
+	public ResponseEntity<Object> updateProduct(@RequestBody Product product) {
 		try {
 			validateProduct(product);
 			service.updateProduct(product);
@@ -59,9 +76,15 @@ public class ProductController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	/**
+	 * REST end point for retrieving Product.
+	 *
+	 * @param id - id of the product that needs to be retrieved.
+	 * @return A {@link ResponseEntity<ProductDetail>}
+	 */
 	@GetMapping("/product/{id}")
-	public ResponseEntity<ProductDetail> getProductByID(@PathVariable long id) {
-		ProductDetail product = null;
+	public ResponseEntity<Product> getProductByID(@PathVariable long id) {
+		Product product = null;
 		try {
 			product = service.getProductByID(id, urlInfo);
 		} catch (ResourceNotFoundException e) {
@@ -71,20 +94,21 @@ public class ProductController {
 			logger.error("Internal Service error for product PUT end point", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<> (product, HttpStatus.OK);
+		return new ResponseEntity<>(product, HttpStatus.OK);
 	}
-	
-	private void validateProduct(ProductDetail product) {
+
+	private void validateProduct(Product product) {
 		if (product.getId() <= 0L) {
 			logger.error("productId should be greater than zero");
 			throw new IllegalArgumentException("Product ID is invalid");
 		}
-		
-		if (product.getCurrentPrice() == null || product.getCurrentPrice().getValue() == null || product.getCurrentPrice().getCurrencyCode() == null) {
+
+		if (product.getCurrentPrice() == null || product.getCurrentPrice().getValue() == null
+				|| product.getCurrentPrice().getCurrencyCode() == null) {
 			logger.error("Product price or currency code cannot be null or empty");
 			throw new IllegalArgumentException("Product Price is invalid");
 		}
-		
+
 	}
 
 }
