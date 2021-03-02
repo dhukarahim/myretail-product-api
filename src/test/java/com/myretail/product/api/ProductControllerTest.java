@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.myretail.product.api.controller.ProductController;
 import com.myretail.product.api.exception.ResourceNotFoundException;
 import com.myretail.product.api.exception.ServiceException;
-import com.myretail.product.api.model.ProductDetail;
+import com.myretail.product.api.model.Product;
 import com.myretail.product.api.model.ProductPrice;
 import com.myretail.product.api.service.ProductServiceImpl;
 
@@ -35,19 +35,13 @@ class ProductControllerTest {
 	@InjectMocks
 	private ProductController controller;
 
-	/** Initialize */
-	@Before
-	public void setUp() {
-		//MockitoAnnotations.initMocks(this);
-	}
-
 	@Test
 	public void testGetProductById() {
 		ProductPrice price = new ProductPrice(new BigDecimal(20.99), "USD");
-		ProductDetail product = new ProductDetail(2131, "", price);
+		Product product = new Product(2131, "", price);
 		
 		when(mockService.getProductByID(2131, null)).thenReturn(product);
-		ResponseEntity<ProductDetail> actualProduct = controller.getProductByID(2131);
+		ResponseEntity<Product> actualProduct = controller.getProductByID(2131);
 		assertNotNull(actualProduct);
 		assertEquals(HttpStatus.OK, actualProduct.getStatusCode());
 	}
@@ -55,7 +49,7 @@ class ProductControllerTest {
 	@Test
 	public void testGetProductByIdResourceNotFound() {
 		Mockito.doThrow(new ResourceNotFoundException("")).when(mockService).getProductByID(12, null);
-		ResponseEntity<ProductDetail> actualProduct = controller.getProductByID(12);
+		ResponseEntity<Product> actualProduct = controller.getProductByID(12);
 		assertNull(actualProduct.getBody());
 		assertEquals(HttpStatus.NOT_FOUND, actualProduct.getStatusCode());
 	}
@@ -63,7 +57,7 @@ class ProductControllerTest {
 	@Test
 	public void testGetProductByIdInternalServerError() {
 		Mockito.doThrow(new ServiceException("")).when(mockService).getProductByID(10, null);
-		ResponseEntity<ProductDetail> actualProduct = controller.getProductByID(10);
+		ResponseEntity<Product> actualProduct = controller.getProductByID(10);
 		assertNull(actualProduct.getBody());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualProduct.getStatusCode());
 	}
@@ -74,7 +68,7 @@ class ProductControllerTest {
 	@Test
 	public void testAddProduct() {
 		ProductPrice price = new ProductPrice(new BigDecimal(20.99), "USD");
-		ProductDetail product = new ProductDetail(2131, "", price);
+		Product product = new Product(2131, "", price);
 		
 		ResponseEntity<Object> actualProduct = controller.addProduct(product);
 		assertNotNull(actualProduct);
@@ -88,7 +82,7 @@ class ProductControllerTest {
 	@Test
 	public void testAddProductWithBadProductID() {
 		ProductPrice price = new ProductPrice(new BigDecimal(20.99), "USD");
-		ProductDetail product = new ProductDetail(0, "", price);
+		Product product = new Product(0, "", price);
 		
 		ResponseEntity<Object> actualProduct = controller.addProduct(product);
 		assertNotNull(actualProduct);
@@ -101,7 +95,7 @@ class ProductControllerTest {
 	 */
 	@Test
 	public void testAddProductWithBadProductPrice() {
-		ProductDetail product = new ProductDetail(0, "", null);
+		Product product = new Product(0, "", null);
 		
 		ResponseEntity<Object> actualProduct = controller.addProduct(product);
 		assertNotNull(actualProduct);
@@ -115,7 +109,7 @@ class ProductControllerTest {
 	@Test
 	public void testUpdateProduct() {
 		ProductPrice price = new ProductPrice(new BigDecimal(20.99), "USD");
-		ProductDetail product = new ProductDetail(2131, "", price);
+		Product product = new Product(2131, "", price);
 		
 		ResponseEntity<Object> actualProduct = controller.updateProduct(product);
 		assertNotNull(actualProduct);
@@ -129,7 +123,7 @@ class ProductControllerTest {
 	@Test
 	public void testUpdateProductWithBadProductID() {
 		ProductPrice price = new ProductPrice(new BigDecimal(20.99), "USD");
-		ProductDetail product = new ProductDetail(0, "", price);
+		Product product = new Product(0, "", price);
 		
 		ResponseEntity<Object> actualProduct = controller.updateProduct(product);
 		assertNotNull(actualProduct);
@@ -142,7 +136,7 @@ class ProductControllerTest {
 	 */
 	@Test
 	public void testUpdateProductWithBadProductPrice() {
-		ProductDetail product = new ProductDetail(0, "", null);
+		Product product = new Product(0, "", null);
 		
 		ResponseEntity<Object> actualProduct = controller.updateProduct(product);
 		assertNotNull(actualProduct);
